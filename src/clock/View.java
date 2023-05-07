@@ -46,28 +46,28 @@ public class View implements Observer {
         //Create file menu item action listeners
         fileMenuItem1.addActionListener(new ActionListener(){
             @Override
-            public void actionPerformed(ActionEven e){
+            public void actionPerformed(ActionEvent e){
                 
             }
         });
         
         fileMenuItem2.addActionListener(new ActionListener(){
             @Override
-            public void actionPerformed(ActionEven e){
+            public void actionPerformed(ActionEvent e){
                 
             }
         });
         
         fileMenuItem3.addActionListener(new ActionListener(){
             @Override
-            public void actionPerformed(ActionEven e){
+            public void actionPerformed(ActionEvent e){
                 
             }
         });
         
         fileMenuItem4.addActionListener(new ActionListener(){
             @Override
-            public void actionPerformed(ActionEven e){
+            public void actionPerformed(ActionEvent e){
                 
             }
         });
