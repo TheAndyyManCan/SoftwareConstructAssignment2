@@ -79,7 +79,7 @@ public class View implements Observer {
         helpMenuItem1.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-                JOptionPane.showMessageDialog(frame, "Assignment 3: Alarm Clock");
+                JOptionPane.showMessageDialog(frame, "Assignment 3: Alarm Clock \nAndy McDonald 12001649");
             }
         });
         
