@@ -1,6 +1,7 @@
 package clock;
 
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 import java.util.Observer;
 import java.util.Observable;
@@ -10,7 +11,7 @@ public class View implements Observer {
     ClockPanel panel;
     
     public View(Model model) {
-        JFrame frame = new JFrame();
+        final JFrame frame = new JFrame();
         panel = new ClockPanel(model);
         //frame.setContentPane(panel);
         frame.setTitle("Java Clock");
@@ -28,13 +29,79 @@ public class View implements Observer {
         
         Container pane = frame.getContentPane();
         
-        JButton button = new JButton("Button 1 (PAGE_START)");
-        pane.add(button, BorderLayout.PAGE_START);
+        //Add new menu bar
+        JMenuBar menuBar = new JMenuBar();
+        pane.add(menuBar, BorderLayout.PAGE_START);
+        
+        //Create menus
+        JMenu fileMenu = new JMenu("File");
+        JMenu helpMenu = new JMenu("Help");
+        
+        //Create File Menu items
+        JMenuItem fileMenuItem1 = new JMenuItem("New Alarm");
+        JMenuItem fileMenuItem2 = new JMenuItem("Save Alarms");
+        JMenuItem fileMenuItem3 = new JMenuItem("Save Alarms As...");
+        JMenuItem fileMenuItem4 = new JMenuItem("Load Alarm File");
+    
+        //Create file menu item action listeners
+        fileMenuItem1.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                
+            }
+        });
+        
+        fileMenuItem2.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                
+            }
+        });
+        
+        fileMenuItem3.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                
+            }
+        });
+        
+        fileMenuItem4.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                
+            }
+        });
+        
+        //Create help menu items
+        JMenuItem helpMenuItem1 = new JMenuItem("About");
+        
+        //Create help menu item action listeners
+        helpMenuItem1.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                JOptionPane.showMessageDialog(frame, "Assignment 3: Alarm Clock \nAndy McDonald 12001649");
+            }
+        });
+        
+        //Add fileMenuItems to fileMenu
+        fileMenu.add(fileMenuItem1);
+        fileMenu.add(fileMenuItem2);
+        fileMenu.add(fileMenuItem3);
+        fileMenu.add(fileMenuItem4);
+        
+        //Add helpMenuItems to helpMenu
+        helpMenu.add(helpMenuItem1);
+        
+        //Add menus to menubar
+        menuBar.add(fileMenu);
+        menuBar.add(helpMenu);
+        
+        frame.setJMenuBar(menuBar);
          
         panel.setPreferredSize(new Dimension(200, 200));
         pane.add(panel, BorderLayout.CENTER);
          
-        button = new JButton("Button 3 (LINE_START)");
+        JButton button = new JButton("Button 3 (LINE_START)");
         pane.add(button, BorderLayout.LINE_START);
          
         button = new JButton("Long-Named Button 4 (PAGE_END)");
