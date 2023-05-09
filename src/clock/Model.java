@@ -64,7 +64,7 @@ public class Model extends Observable {
             long newPriority = currentTime.until(((PriorityItem<Alarm>) storage[i]).getItem().getTime(), ChronoUnit.MINUTES);
             
             if(newPriority < 0){
-                newPriority = (currentTime.until(LocalTime.MAX, ChronoUnit.MINUTES)) + (LocalTime.MIDNIGHT.until(((PriorityItem<Alarm>) storage[i]).getItem().getTime(), ChronoUnit.MINUTES));
+                newPriority = ((currentTime.until(LocalTime.MAX, ChronoUnit.MINUTES)) + (LocalTime.MIDNIGHT.until(((PriorityItem<Alarm>) storage[i]).getItem().getTime(), ChronoUnit.MINUTES))) + 1;
             }
             
             newPriorities[i] = (int)newPriority;

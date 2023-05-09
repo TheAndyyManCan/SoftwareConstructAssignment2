@@ -28,7 +28,7 @@ public class Controller {
         
     }
     
-    public void addNewAlarm(LocalTime time){
+    public void addNewAlarm(int hour, int minutes){
         
     }
 }
