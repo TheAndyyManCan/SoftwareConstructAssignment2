@@ -30,4 +30,8 @@ public class Alarm {
         return ((this.time.getHour() == this.currentTime.getHour()) || (this.time.getMinute() == this.currentTime.getMinute()));
     }
     
+    @Override
+    public String toString(){
+        return this.time.getHour() + ":" + this.time.getMinute();
+    }
 }

@@ -3,6 +3,7 @@ package clock;
 import java.awt.event.*;
 import javax.swing.Timer;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 
 public class Controller {
     
@@ -20,6 +21,18 @@ public class Controller {
             @Override
             public void actionPerformed(ActionEvent e) {
                 model.update();
+                boolean alarm = checkNextAlarm();
+                
+                if(alarm){
+                    
+                    view.showAlarm();
+                    
+                    try {
+                        model.alarmQueue.remove();
+                    } catch (Exception x){
+                        
+                    }
+                }
             }
         };
         
@@ -28,7 +41,18 @@ public class Controller {
         
     }
     
-    public void addNewAlarm(int hour, int minutes){
+    public boolean checkNextAlarm(){
+        
+        try {
+            
+            Alarm nextAlarm = model.alarmQueue.head();
+            LocalTime currentTime = LocalTime.now();
+        
+            return currentTime.until(nextAlarm.getTime(), ChronoUnit.SECONDS) == 0;
+            
+        } catch (Exception e){
+           return false;
+        }
         
     }
 }

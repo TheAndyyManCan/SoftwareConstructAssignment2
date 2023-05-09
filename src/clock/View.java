@@ -146,7 +146,16 @@ public class View implements Observer {
          
         panel.setPreferredSize(new Dimension(200, 200));
         pane.add(panel, BorderLayout.CENTER);
-         
+        
+        JInternalFrame alarmList = new JInternalFrame("Alarm List");
+        //JButton[] buttonArray = model.getAlarmsAsButtons();
+        Container alarmListPane = frame.getContentPane();
+        //for(int i = 0; i < buttonArray.length; i++){
+            //alarmListPane.add(buttonArray[i]);
+        //}
+        
+        pane.add(alarmList, BorderLayout.LINE_START);
+        alarmList.setVisible(true);
         //JButton button = new JButton("Button 3 (LINE_START)");
         //pane.add(button, BorderLayout.LINE_START);
          
@@ -164,5 +173,9 @@ public class View implements Observer {
     
     public void update(Observable o, Object arg) {
         panel.repaint();
+    }
+    
+    public void showAlarm(){
+        JOptionPane.showMessageDialog(null, "ALARM");
     }
 }
