@@ -2,6 +2,7 @@ package clock;
 
 import java.awt.event.*;
 import javax.swing.Timer;
+import java.time.LocalTime;
 
 public class Controller {
     
@@ -16,6 +17,7 @@ public class Controller {
         view = v;
         
         listener = new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 model.update();
             }
@@ -23,5 +25,10 @@ public class Controller {
         
         timer = new Timer(100, listener);
         timer.start();
+        
+    }
+    
+    public void addNewAlarm(LocalTime time){
+        
     }
 }
