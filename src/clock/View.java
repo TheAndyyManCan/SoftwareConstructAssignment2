@@ -75,6 +75,7 @@ public class View implements Observer {
            @Override
            public void actionPerformed(ActionEvent e){
                
+               //Create spinner models to be used to input hours and minutes of alarms
                SpinnerModel hourSpinnerModel = new SpinnerNumberModel(
                        (int)LocalTime.now().getHour(),
                        0,
@@ -89,14 +90,20 @@ public class View implements Observer {
                        1
                );
                
+               //Create JSpinner objects based on the models created
                JSpinner hourSpinner = new JSpinner(hourSpinnerModel);
                JSpinner minuteSpinner = new JSpinner(minuteSpinnerModel);
                
+               //The items to be viewed in the JOptionPane object
                Object[] fields = {
                    "Hours: ", hourSpinner,
                    "Minutes: ", minuteSpinner
                };
                
+               /**
+                * Creates a JOptionPane Option Dialog box to collect user input to create an alarm
+                * The button chosen by the user is returned as an int value
+                */
                int addAlarm = JOptionPane.showOptionDialog(
                        frame,
                        fields,
@@ -108,6 +115,7 @@ public class View implements Observer {
                        null
                );
                
+               //Check the user has clicked the 'OK' button and add a new alarm if they have
                if(addAlarm == JOptionPane.OK_OPTION){
                    LocalTime alarmTime = LocalTime.of((int)hourSpinner.getValue(), (int)minuteSpinner.getValue());
                    model.addAlarm(alarmTime);
@@ -148,30 +156,31 @@ public class View implements Observer {
         panel.setPreferredSize(new Dimension(200, 200));
         pane.add(panel, BorderLayout.CENTER);
         
+        //Create a new panal to display current active alarms
         final JPanel alarmList = new JPanel();
+        //Create vertical layout to display alarms
         final BoxLayout alarmListLayout = new BoxLayout(alarmList, BoxLayout.Y_AXIS);
+        //Add the panel to the frame
         pane.add(alarmList, BorderLayout.LINE_START);
         
+        //Create a button to toggle the current alarm panel
         alarmToggle = new JButton("View Alarms");
         pane.add(alarmToggle, BorderLayout.PAGE_END);
         
+        //Add action listener to handle button being clicked
         alarmToggle.addActionListener(new ActionListener(){
             
             @Override
             public void actionPerformed(ActionEvent e){
                
+                //Get JButton array to display current alarms and allow them to be edited/deleted
                 JButton[] buttonArray = model.getAlarmsAsButtons();
                 
+                //Call toggleCurrentAlarms to toggle the visibility of the alarm list panel
                 toggleCurrentAlarms(buttonArray, alarmList, alarmListLayout);
             }
             
         });
-         
-        //button = new JButton("Long-Named Button 4 (PAGE_END)");
-        //pane.add(button, BorderLayout.PAGE_END);
-         
-        //button = new JButton("5 (LINE_END)");
-        //pane.add(button, BorderLayout.LINE_END);
         
         // End of borderlayout code
         
@@ -183,10 +192,21 @@ public class View implements Observer {
         panel.repaint();
     }
     
+    /**
+     * Show the alarm when the alarm is due to go off
+     * This is called from the Controller class
+     */
     public void showAlarm(){
         JOptionPane.showMessageDialog(null, "ALARM");
     }
     
+    /**
+     * Toggles the visibility of the alarm list panel
+     * checks if the panel is visible and sets the visibility to the opposite of what is currently set
+     * @param buttonArray JButton array showing current alarms set with action listeners to edit/delete alarms
+     * @param alarmList JPanel to display current alarms
+     * @param alarmListLayout BoxLayout for alarm list panel 
+     */
     public void toggleCurrentAlarms(JButton[] buttonArray, JPanel alarmList, BoxLayout alarmListLayout){
         
         if(alarmList.isVisible()){
@@ -207,6 +227,11 @@ public class View implements Observer {
         
     }
     
+    /**
+     * Updates the alarm toggle button with the current alarm status
+     * Will display the time of the next alarm if there is an alarm set
+     * @param model Model class to get time of next alarm from alarm queue
+     */
     public void updateAlarmToggle(Model model){
         
         if(model.alarmQueue.isEmpty()){

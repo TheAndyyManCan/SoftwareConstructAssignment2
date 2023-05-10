@@ -43,6 +43,10 @@ public class Controller {
         
     }
     
+    /**
+     * Checks the head of the alarm queue to see if it is ready to go off
+     * @return true if the alarm is due to go off 
+     */
     public boolean checkNextAlarm(){
         
         try {

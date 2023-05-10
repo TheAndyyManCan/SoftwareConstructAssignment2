@@ -40,6 +40,11 @@ public class Model extends Observable {
         }
     }
     
+    /**
+     * Creates a new Alarm objet and adds it to the alarm queue
+     * Works out the priority value based on the amount of time until the alarm goes off 
+     * @param time LocalTime the time the alarm should go off
+     */
     public void addAlarm(LocalTime time){
         
         Alarm alarm = new Alarm(time);
@@ -59,6 +64,10 @@ public class Model extends Observable {
         
     }
     
+    /**
+     * Creates an array of new priority values by calculating the time until each alarm from the current time
+     * Passes this array to the Priority Queue class which will then reorganise the queue with the new priority values
+     */
     public void reorganizeAlarmQueue(){
         
         int[] newPriorities = new int[this.alarmQueue.getTailIndex() + 1];
@@ -81,14 +90,22 @@ public class Model extends Observable {
         
     }
     
+    /**
+     * Creates an array of JButton objects to be used to create a list of currently active alarms
+     * Also gives functionality to each button to edit and delete each alarm by creating actionListener for each object
+     * @return JButton[] array of JButton objects with actionListeners attached 
+     */
     public JButton[] getAlarmsAsButtons(){
         
         JButton[] buttonArray = new JButton[this.alarmQueue.getTailIndex() + 1];
         
-        if(this.alarmQueue.getTailIndex() > 0){
+        //check if alarm queue is not empty
+        if(!this.alarmQueue.isEmpty()){
             
+            //Loop through each alarm object in the queue
             for(int i=0; i <= this.alarmQueue.getTailIndex(); i++){
                 
+                //create a new button for alamr object with the alarm time as the button text
                 JButton button = new JButton(((PriorityItem<Alarm>)this.alarmQueue.getStorage()[i]).getItem().toString());
                 
                 final int index = i;
@@ -138,6 +155,10 @@ public class Model extends Observable {
                             null
                         );
                         
+                        /**
+                         * If the edit button is pressed, store the new alarm time in the queue
+                         * If the delete button is pressed, delete the alarm from the queue
+                         */
                         if(editAlarm == JOptionPane.OK_OPTION){
                             Alarm alarm = new Alarm(LocalTime.of((int)hourSpinner.getValue(), (int)minuteSpinner.getValue()));
                             editAlarm(alarm, index);
@@ -149,6 +170,7 @@ public class Model extends Observable {
                     
                 });
                 
+                //add new button to the array of JButton objects
                 buttonArray[i] = button;
             } 
         }
@@ -156,6 +178,13 @@ public class Model extends Observable {
         return buttonArray;
     }
     
+    /**
+     * Accepts a new Alarm item to replace the Alarm item being edited and creates a new priority value for the alarm
+     * Passes Alarm item, priority value and array index to be replaced to the Priority Queue class to replace the Alarm being edited
+     * Calls the reorganizeAlarmQueue method to reorganize the queue
+     * @param alarm new Alarm item to be inserted into the queue
+     * @param index index of the Alarm item being edited in the storage array
+     */
     public void editAlarm(Alarm alarm, int index){
         
         int priority = 0;
@@ -172,6 +201,11 @@ public class Model extends Observable {
         
     }
     
+    /**
+     * Calls the deleteItemInQueue function in the PriorityQueue class and passes the index in the storage array to be deleted
+     * Calls the reorganizeAlarmQueue class to reorganise the queue once the item has been deleted
+     * @param index Index of storage array to be deleted
+     */
     public void deleteAlarm(int index){
         this.alarmQueue.deleteItemInQueue(index);
         this.reorganizeAlarmQueue();
