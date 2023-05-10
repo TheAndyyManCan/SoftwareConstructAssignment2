@@ -76,8 +76,13 @@ public class Model extends Observable {
         
         for(int i=0; i <= this.alarmQueue.getTailIndex(); i++){
             
+            //Calculate priority as the amount of seconds between now and the time the alarm should go off 
             long newPriority = currentTime.until(((PriorityItem<Alarm>) storage[i]).getItem().getTime(), ChronoUnit.SECONDS);
             
+            /**
+            * If the priority is below 0 then the alarm is due to go off the next day.
+            * Priority should then be calculated as (time from now until 23.59.59) + (time from midnight until the alarm time) + 1 second to make up for the second lost between 23.59.59 and midnight  
+            */
             if(newPriority < 0){
                 newPriority = ((currentTime.until(LocalTime.MAX, ChronoUnit.SECONDS)) + (LocalTime.MIDNIGHT.until(((PriorityItem<Alarm>) storage[i]).getItem().getTime(), ChronoUnit.SECONDS))) + 1;
             }
@@ -190,8 +195,13 @@ public class Model extends Observable {
         int priority = 0;
         LocalTime currentTime = LocalTime.now();
         
+        //Calculate priority as the amount of seconds between now and the time the alarm should go off
         priority = (int)currentTime.until(alarm.getTime(), ChronoUnit.SECONDS);
         
+        /**
+         * If the priority is below 0 then the alarm is due to go off the next day.
+         * Priority should then be calculated as (time from now until 23.59.59) + (time from midnight until the alarm time) + 1 second to make up for the second lost between 23.59.59 and midnight  
+         */
         if(priority < 0){
             priority = (int)(currentTime.until(LocalTime.MAX, ChronoUnit.SECONDS)) + (int)(LocalTime.MIDNIGHT.until(alarm.getTime(), ChronoUnit.SECONDS)) + 1;
         }
