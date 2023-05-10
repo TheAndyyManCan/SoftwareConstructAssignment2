@@ -61,11 +61,11 @@ public class Model extends Observable {
     
     public void reorganizeAlarmQueue(){
         
-        int[] newPriorities = new int[this.alarmQueue.getCapacity()];
+        int[] newPriorities = new int[this.alarmQueue.getTailIndex() + 1];
         Object[] storage = this.alarmQueue.getStorage();
         LocalTime currentTime = LocalTime.now();
         
-        for(int i=0; i < storage.length; i++){
+        for(int i=0; i <= this.alarmQueue.getTailIndex(); i++){
             
             long newPriority = currentTime.until(((PriorityItem<Alarm>) storage[i]).getItem().getTime(), ChronoUnit.SECONDS);
             
@@ -83,11 +83,11 @@ public class Model extends Observable {
     
     public JButton[] getAlarmsAsButtons(){
         
-        JButton[] buttonArray = new JButton[this.alarmQueue.getStorage().length];
+        JButton[] buttonArray = new JButton[this.alarmQueue.getTailIndex() + 1];
         
-        if(this.alarmQueue.getStorage().length > 0){
+        if(this.alarmQueue.getTailIndex() > 0){
             
-            for(int i=0; i < this.alarmQueue.getStorage().length; i++){
+            for(int i=0; i <= this.alarmQueue.getTailIndex(); i++){
                 
                 JButton button = new JButton(((PriorityItem<Alarm>)this.alarmQueue.getStorage()[i]).getItem().toString());
                 
@@ -99,14 +99,14 @@ public class Model extends Observable {
                     public void actionPerformed(ActionEvent e){
                         
                        SpinnerModel hourSpinnerModel = new SpinnerNumberModel(
-                            (int)LocalTime.now().getHour(),
+                            (int)((PriorityItem<Alarm>)alarmQueue.getStorage()[index]).getItem().getTime().getHour(),
                             0,
                             23,
                             1
                         );
                
                         SpinnerModel minuteSpinnerModel = new SpinnerNumberModel(
-                            (int)LocalTime.now().getMinute(),
+                            (int)((PriorityItem<Alarm>)alarmQueue.getStorage()[index]).getItem().getTime().getMinute(),
                             0,
                             59,
                             1
@@ -114,27 +114,37 @@ public class Model extends Observable {
                
                         JSpinner hourSpinner = new JSpinner(hourSpinnerModel);
                         JSpinner minuteSpinner = new JSpinner(minuteSpinnerModel);
+                        
                
                         Object[] fields = {
                             "Hours: ", hourSpinner,
                             "Minutes: ", minuteSpinner
                         };
+                        
+                        Object[] options = {
+                            "Edit",
+                            "Delete",
+                            "Cancel"
+                        };
                
                         int editAlarm = JOptionPane.showOptionDialog(
                             null,
                             fields,
-                            "Set Alarm: ",
+                            "Edit Alarm: ",
                             JOptionPane.OK_CANCEL_OPTION,
                             JOptionPane.QUESTION_MESSAGE,
                             null,
-                            null,
+                                options,
                             null
                         );
                         
                         if(editAlarm == JOptionPane.OK_OPTION){
                             Alarm alarm = new Alarm(LocalTime.of((int)hourSpinner.getValue(), (int)minuteSpinner.getValue()));
                             editAlarm(alarm, index);
+                        } else if (editAlarm == 1) {
+                            deleteAlarm(index);
                         }
+                        
                     }
                     
                 });
@@ -160,6 +170,11 @@ public class Model extends Observable {
         this.alarmQueue.editItemInQueue(alarm, priority, index);
         this.reorganizeAlarmQueue();
         
+    }
+    
+    public void deleteAlarm(int index){
+        this.alarmQueue.deleteItemInQueue(index);
+        this.reorganizeAlarmQueue();
     }
     
 }

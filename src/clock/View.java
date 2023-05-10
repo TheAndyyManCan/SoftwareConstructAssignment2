@@ -10,6 +10,7 @@ import java.util.Observable;
 public class View implements Observer {
     
     ClockPanel panel;
+    JButton alarmToggle;
     
     public View(final Model model) {
         final JFrame frame = new JFrame();
@@ -147,17 +148,24 @@ public class View implements Observer {
         panel.setPreferredSize(new Dimension(200, 200));
         pane.add(panel, BorderLayout.CENTER);
         
-        JInternalFrame alarmList = new JInternalFrame("Alarm List");
-        //JButton[] buttonArray = model.getAlarmsAsButtons();
-        Container alarmListPane = frame.getContentPane();
-        //for(int i = 0; i < buttonArray.length; i++){
-            //alarmListPane.add(buttonArray[i]);
-        //}
-        
+        final JPanel alarmList = new JPanel();
+        final BoxLayout alarmListLayout = new BoxLayout(alarmList, BoxLayout.Y_AXIS);
         pane.add(alarmList, BorderLayout.LINE_START);
-        alarmList.setVisible(true);
-        //JButton button = new JButton("Button 3 (LINE_START)");
-        //pane.add(button, BorderLayout.LINE_START);
+        
+        alarmToggle = new JButton("View Alarms");
+        pane.add(alarmToggle, BorderLayout.PAGE_END);
+        
+        alarmToggle.addActionListener(new ActionListener(){
+            
+            @Override
+            public void actionPerformed(ActionEvent e){
+               
+                JButton[] buttonArray = model.getAlarmsAsButtons();
+                
+                toggleCurrentAlarms(buttonArray, alarmList, alarmListLayout);
+            }
+            
+        });
          
         //button = new JButton("Long-Named Button 4 (PAGE_END)");
         //pane.add(button, BorderLayout.PAGE_END);
@@ -177,5 +185,40 @@ public class View implements Observer {
     
     public void showAlarm(){
         JOptionPane.showMessageDialog(null, "ALARM");
+    }
+    
+    public void toggleCurrentAlarms(JButton[] buttonArray, JPanel alarmList, BoxLayout alarmListLayout){
+        
+        if(alarmList.isVisible()){
+            alarmList.setVisible(false);
+            alarmList.removeAll();
+        } else {
+            
+            alarmList.setLayout(alarmListLayout);
+            alarmList.add(Box.createVerticalGlue());
+            
+            for(int i=0; i < buttonArray.length; i++){
+                alarmList.add(buttonArray[i]);
+            }
+        
+            alarmList.setVisible(true);
+            
+        }
+        
+    }
+    
+    public void updateAlarmToggle(Model model){
+        
+        if(model.alarmQueue.isEmpty()){
+            alarmToggle.setText("No Alarm Set");
+        } else {
+            
+            try {
+                alarmToggle.setText("View Alarms NEXT ALARM: " + model.alarmQueue.head().toString());
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+            
+        }
     }
 }

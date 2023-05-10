@@ -30,9 +30,11 @@ public class Controller {
                     try {
                         model.alarmQueue.remove();
                     } catch (Exception x){
-                        
+                        x.printStackTrace();
                     }
                 }
+                
+                view.updateAlarmToggle(model);
             }
         };
         
