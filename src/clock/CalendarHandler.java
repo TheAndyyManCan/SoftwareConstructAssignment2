@@ -12,7 +12,8 @@ import java.time.temporal.ChronoUnit;
 import net.fortuna.ical4j.model.Date;
 
 /**
- *
+ * Class to handle iCalendar events and files using the iCal4J library
+ * This class is not finished, has not been implemented and therefore has not been included in testing
  * @author andy
  */
 public class CalendarHandler {
@@ -20,9 +21,14 @@ public class CalendarHandler {
     Calendar calendar;
     
     public CalendarHandler(){
-        this.calendar = new net.fortuna.ical4j.model.Calendar();
+        this.calendar = new Calendar();
     }
     
+    /**
+     * Creates a new VEvent object and adds it to the calendar object
+     * @param alarm the alarm object to create an event for
+     * @param index the index of the storage array from the priority queue
+     */
     public void createAlarmEventAndAddToCalendar(Alarm alarm, int index){
         
         java.util.Calendar cal = java.util.Calendar.getInstance();
@@ -46,6 +52,11 @@ public class CalendarHandler {
         
     } 
     
+    /**
+     * Reads a calendar file from a FileInputStream object
+     * @param fin FileInputStream object to read calendar file from 
+     * @throws IOException 
+     */
     public void readCalendarFile(FileInputStream fin) throws IOException {
         
         try {
@@ -57,6 +68,11 @@ public class CalendarHandler {
         
     }
     
+    /**
+     * Returns a FileOutputStream with a calendar object converted into an ics file
+     * @return FileOutputStream with a calendar object converted into an ics file
+     * @throws IOException 
+     */
     public FileOutputStream outputCalendarFile() throws IOException{
         
         FileOutputStream fout = new FileOutputStream("myalarms.ics");
